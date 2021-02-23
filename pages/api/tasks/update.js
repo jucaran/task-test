@@ -1,9 +1,8 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 
-import { tasks } from './_tasks'
-
-console.log(tasks)
+import { tasks, updateTask } from "./_tasks";
 
 export default (req, res) => {
-  res.status(200).json(tasks)
-}
+  updateTask(JSON.parse(req.body));
+  res.status(200).json(tasks);
+};

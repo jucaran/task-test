@@ -4,7 +4,7 @@ import styles from "../styles/main.module.css";
 
 export default function Home() {
   const [tasks, setTasks] = useState(null);
-  const apiUrl = "http://localhost:3000/api";
+  const apiUrl = "http://localhost:3000/api/tasks";
   useEffect(() => {
     fetch(`${apiUrl}/list`)
       .then((res) => res.json())
