@@ -4,25 +4,71 @@ import styles from "../styles/main.module.css";
 
 export default function Home() {
   const [tasks, setTasks] = useState(null);
+  const [inputs, setInputs] = useState({
+    title: "",
+    color: "red",
+  });
   const apiUrl = "http://localhost:3000/api/tasks";
+
   useEffect(() => {
     fetch(`${apiUrl}/list`)
       .then((res) => res.json())
       .then((data) => setTasks(data));
-  });
+  }, []);
 
   const updateTask = (task) => {
-    const updatedTask = { ...task, complete: !task.complete };
-    console.log(updatedTask);
     fetch(`${apiUrl}/update`, {
       method: "POST",
-      body: JSON.stringify(updatedTask),
+      body: JSON.stringify(task),
     })
       .then((res) => res.json())
-      .then((data) => console.log(data));
+      .then((data) => setTasks(data));
   };
 
-  const deleteTask = () => {};
+  const deleteTask = (taskId) => {
+    fetch(`${apiUrl}/delete`, {
+      method: "DELETE",
+      body: taskId,
+    })
+      .then((res) => res.json())
+      .then((data) => setTasks(data));
+  };
+
+  const changeTaskStatus = (task) => {
+    const updatedTask = { ...task, complete: !task.complete };
+    updateTask(updatedTask);
+  };
+
+  const changeTaskColor = (task, color) => {
+    const updatedTask = { ...task, color: color };
+    updateTask(updatedTask);
+  };
+
+  const toggleTaskColors = (task) => {
+    const colorsSelector = document.getElementById(`colors${task.id}`);
+    const isNotVisible =
+      colorsSelector.style.display === "none" ||
+      colorsSelector.style.display === "";
+
+    colorsSelector.style.display = isNotVisible ? "flex" : "none";
+  };
+
+  const handleChange = (e) => {
+    setInputs({
+      ...inputs,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    fetch(`${apiUrl}/create`, {
+      method: "POST",
+      body: JSON.stringify(inputs),
+    })
+      .then((res) => res.json())
+      .then((data) => setTasks(data));
+  };
 
   return (
     <div className={styles.container}>
@@ -36,25 +82,52 @@ export default function Home() {
         <ul className={styles.tasks_list}>
           {tasks?.map((task) => (
             <li className={styles.task} key={task.id}>
-              <span
-                style={{ backgroundColor: task.color }}
-                className={styles.task_color}
-              ></span>
+              <div>
+                <span
+                  style={{ backgroundColor: task.color }}
+                  className={styles.task_color}
+                  onClick={() => toggleTaskColors(task)}
+                ></span>
+
+                {/* Color picker */}
+                <div id={`colors${task.id}`} className={styles.change_color}>
+                  <span
+                    onClick={() => changeTaskColor(task, "red")}
+                    style={{ backgroundColor: "red" }}
+                    className={styles.task_color}
+                  ></span>
+                  <span
+                    onClick={() => changeTaskColor(task, "green")}
+                    style={{ backgroundColor: "green" }}
+                    className={styles.task_color}
+                  ></span>
+                  <span
+                    onClick={() => changeTaskColor(task, "blue")}
+                    style={{ backgroundColor: "blue" }}
+                    className={styles.task_color}
+                  ></span>
+                </div>
+              </div>
               <span>{task.title}</span>
               <span
-                className={styles.task_complete}
+                className={styles.task_status}
                 style={{ backgroundColor: task.complete ? "green" : "red" }}
-                onClick={() => updateTask(task)}
+                onClick={() => changeTaskStatus(task)}
               >
                 {task.complete ? "Completed" : "Not completed"}
               </span>
-              <span onClick={deleteTask} className={styles.delete_btn}>
-                delete
+              <span
+                onClick={() => deleteTask(task.id)}
+                className={styles.delete_btn}
+              >
+                X
               </span>
             </li>
           ))}
         </ul>
-        <form className={styles.add_form}>
+
+        {/* Add tasks */}
+        <form onSubmit={(e) => handleSubmit(e)} className={styles.add_form}>
           <div>
             <label htmlFor="title">Title: </label>
             <input
@@ -63,19 +136,29 @@ export default function Home() {
               placeholder="Title..."
               name="title"
               id="title"
+              value={inputs.title}
+              onChange={(e) => handleChange(e)}
             />
           </div>
           <div>
-            <label htmlFor="color">Color: </label>
-            <select className={styles.add_input} name="color" id="color_select">
-              <option value="#ff0000">Red</option>
-              <option value="#00ff00">Green</option>
-              <option value="#0000ff">Blue</option>
+            <label htmlFor="color">Color tag:</label>
+            <select
+              placeholder="Color..."
+              onChange={(e) => handleChange(e)}
+              className={styles.add_input}
+              name="color"
+              id="color_select"
+            >
+              <option value="red">Red</option>
+              <option value="green">Green</option>
+              <option value="blue">Blue</option>
             </select>
           </div>
           <div>
             <label htmlFor="add">Add Task:</label>
-            <button className={styles.add_btn}>+</button>
+            <button type="submit" className={styles.add_btn}>
+              +
+            </button>
           </div>
         </form>
       </main>

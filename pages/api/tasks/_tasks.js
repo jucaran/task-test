@@ -19,6 +19,12 @@ export let tasks = [
   },
 ];
 
+export const createTask = (task) => {
+  task.id = tasks[tasks.length - 1].id + 1;
+  task.complete = false;
+  tasks.push(task);
+};
+
 export const updateTask = (task) => {
   tasks = tasks.map((el) => {
     if (el.id === task.id) {
@@ -29,4 +35,5 @@ export const updateTask = (task) => {
 
 export const deleteTask = (id) => {
   tasks = tasks.filter((el) => el.id !== id);
+  console.log(tasks);
 };
