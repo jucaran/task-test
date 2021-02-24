@@ -16,6 +16,16 @@ export default function Home() {
       .then((data) => setTasks(data));
   }, []);
 
+  const createTask = async (e) => {
+    e.preventDefault();
+    fetch(`${apiUrl}/create`, {
+      method: "POST",
+      body: JSON.stringify(inputs),
+    })
+      .then((res) => res.json())
+      .then((data) => setTasks(data));
+  };
+
   const updateTask = (task) => {
     fetch(`${apiUrl}/update`, {
       method: "POST",
@@ -42,6 +52,7 @@ export default function Home() {
   const changeTaskColor = (task, color) => {
     const updatedTask = { ...task, color: color };
     updateTask(updatedTask);
+    toggleTaskColors(task);
   };
 
   const toggleTaskColors = (task) => {
@@ -58,16 +69,6 @@ export default function Home() {
       ...inputs,
       [e.target.name]: e.target.value,
     });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    fetch(`${apiUrl}/create`, {
-      method: "POST",
-      body: JSON.stringify(inputs),
-    })
-      .then((res) => res.json())
-      .then((data) => setTasks(data));
   };
 
   return (
@@ -127,7 +128,7 @@ export default function Home() {
         </ul>
 
         {/* Add tasks */}
-        <form onSubmit={(e) => handleSubmit(e)} className={styles.add_form}>
+        <form onSubmit={(e) => createTask(e)} className={styles.add_form}>
           <div>
             <label htmlFor="title">Title: </label>
             <input

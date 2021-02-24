@@ -1,7 +1,31 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+import { db } from "./firebase";
 
-import { tasks } from "./_tasks";
+export const listTasks = async () => {
+  // We create an empty array where we're going to store our parse data
+  const tasks = [];
 
-export default (req, res) => {
-  res.status(200).json(tasks);
+  try {
+    // Grab the data from firestore db
+    const tasksSnapShot = await db.collection("tasks").get();
+    tasksSnapShot.forEach((doc) => {
+      tasks.push({
+        id: doc.id,
+        ...doc.data(),
+      });
+    });
+  } catch (err) {
+    console.log(err);
+  }
+
+  // And return it to client
+  return tasks;
+};
+
+export default async (_, res) => {
+  try {
+    const tasks = await listTasks();
+    res.status(200).json(tasks);
+  } catch (err) {
+    res.status(400).json(err);
+  }
 };
