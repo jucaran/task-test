@@ -1,9 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { TaskContext } from "./providers/TasksProvider";
 import Head from "next/head";
 import styles from "../styles/main.module.css";
 
 export default function Home() {
-  const [tasks, setTasks] = useState(null);
+  const { tasks, setTasks, createTask, updateTask, deleteTask } = useContext(
+    TaskContext
+  );
   const [inputs, setInputs] = useState({
     title: "",
     color: "red",
@@ -15,45 +18,6 @@ export default function Home() {
       .then((res) => res.json())
       .then((data) => setTasks(data));
   }, []);
-
-  const createTask = async (e) => {
-    e.preventDefault();
-    fetch(`${apiUrl}/create`, {
-      method: "POST",
-      body: JSON.stringify(inputs),
-    })
-      .then((res) => res.json())
-      .then((data) => setTasks(data));
-  };
-
-  const updateTask = (task) => {
-    fetch(`${apiUrl}/update`, {
-      method: "POST",
-      body: JSON.stringify(task),
-    })
-      .then((res) => res.json())
-      .then((data) => setTasks(data));
-  };
-
-  const deleteTask = (taskId) => {
-    fetch(`${apiUrl}/delete`, {
-      method: "DELETE",
-      body: taskId,
-    })
-      .then((res) => res.json())
-      .then((data) => setTasks(data));
-  };
-
-  const changeTaskStatus = (task) => {
-    const updatedTask = { ...task, complete: !task.complete };
-    updateTask(updatedTask);
-  };
-
-  const changeTaskColor = (task, color) => {
-    const updatedTask = { ...task, color: color };
-    updateTask(updatedTask);
-    toggleTaskColors(task);
-  };
 
   const toggleTaskColors = (task) => {
     const colorsSelector = document.getElementById(`colors${task.id}`);
@@ -79,7 +43,7 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <h1>Task manager!</h1>
+        <h1>Welcome to your task manager!</h1>
         <ul className={styles.tasks_list}>
           {tasks?.map((task) => (
             <li className={styles.task} key={task.id}>
@@ -93,17 +57,26 @@ export default function Home() {
                 {/* Color picker */}
                 <div id={`colors${task.id}`} className={styles.change_color}>
                   <span
-                    onClick={() => changeTaskColor(task, "red")}
+                    onClick={() => {
+                      updateTask({ ...task, color: "red" });
+                      toggleTaskColors(task);
+                    }}
                     style={{ backgroundColor: "red" }}
                     className={styles.task_color}
                   ></span>
                   <span
-                    onClick={() => changeTaskColor(task, "green")}
+                    onClick={() => {
+                      updateTask({ ...task, color: "green" });
+                      toggleTaskColors(task);
+                    }}
                     style={{ backgroundColor: "green" }}
                     className={styles.task_color}
                   ></span>
                   <span
-                    onClick={() => changeTaskColor(task, "blue")}
+                    onClick={() => {
+                      updateTask({ ...task, color: "blue" });
+                      toggleTaskColors(task);
+                    }}
                     style={{ backgroundColor: "blue" }}
                     className={styles.task_color}
                   ></span>
@@ -113,7 +86,9 @@ export default function Home() {
               <span
                 className={styles.task_status}
                 style={{ backgroundColor: task.complete ? "green" : "red" }}
-                onClick={() => changeTaskStatus(task)}
+                onClick={() =>
+                  updateTask({ ...task, complete: !task.complete })
+                }
               >
                 {task.complete ? "Completed" : "Not completed"}
               </span>
