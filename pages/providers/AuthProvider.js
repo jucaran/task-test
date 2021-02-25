@@ -17,7 +17,7 @@ const app = !firebase.apps.length
   ? firebase.initializeApp(firebaseConfig)
   : firebase.app();
 
-const auth = firebase.auth();
+const auth = app.auth();
 
 export const AuthContext = React.createContext({
   user: null,

@@ -32,11 +32,11 @@ export default function Login() {
         <input ref={passwordRef} type="password" name="password" />
         <button type="submit">Sign in</button>
         {error && <span style={{ color: "red" }}>{error}</span>}
-        <button onClick={loginWithGoogle} className={styles.google_btn}>
+        <span onClick={loginWithGoogle} className={styles.google_btn}>
           Use Google Account
-        </button>
-        <Link href="/signup">Don't have an account? Sing-Up!</Link>
+        </span>
       </form>
+      <Link href="/signup">Don't have an account? Sing-Up!</Link>
     </main>
   );
 }

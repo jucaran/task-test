@@ -14,7 +14,7 @@ export default function Home() {
     title: "",
     color: "red",
   });
-  const apiUrl = "http://localhost:3000/api/tasks";
+  const apiUrl = "https://task-test.vercel.app";
 
   useEffect(() => {
     if (!user) {

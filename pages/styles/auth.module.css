@@ -40,6 +40,7 @@
 
 .auth_form button {
   padding: 1rem;
+  font-size: 0.8rem;
   border: 2px solid white;
   border-radius: 10px;
   background: #116db8;
@@ -57,9 +58,19 @@
 
 .auth_form .google_btn {
   background: #b9170b;
+  padding: 1rem;
+  text-align: center;
+  font-size: 0.8rem;
+  border: 2px solid white;
+  border-radius: 10px;
+  color: white;
+  margin: 0.5rem 0;
+  cursor: pointer;
+  transition: 0.3s;
 }
 
 .auth_form .google_btn:hover {
+  background: white;
   color: #b9170b;
   border-color: #b9170b;
 }
