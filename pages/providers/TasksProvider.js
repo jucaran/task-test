@@ -50,3 +50,5 @@ export const TaskProvider = ({ children }) => {
     </TaskContext.Provider>
   );
 };
+
+export default TaskProvider;
