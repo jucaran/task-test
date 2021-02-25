@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useRef, useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import styles from "./styles/auth.module.css";
@@ -11,7 +11,13 @@ export default function Login() {
   const emailRef = useRef();
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
-  const { signup } = useContext(AuthContext);
+  const { user, signup, loginWithGoogle } = useContext(AuthContext);
+
+  useEffect(() => {
+    if (user) {
+      router.push("/");
+    }
+  }, [user]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -46,11 +52,11 @@ export default function Login() {
         <button disable={loading.toString()} type="submit">
           Create account
         </button>
-        <button disable={loading.toString()} className={styles.google_btn}>
+        <span onClick={loginWithGoogle} className={styles.google_btn}>
           Use Google Account
-        </button>
-        <Link href="/login">Already have an account? Sign-In!</Link>
+        </span>
       </form>
+      <Link href="/login">Already have an account? Sign-In!</Link>
     </main>
   );
 }

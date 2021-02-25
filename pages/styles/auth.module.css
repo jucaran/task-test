@@ -2,7 +2,6 @@
   margin: 0 auto;
   padding: 2rem;
   width: 50vw;
-  /* height: 80vh; */
   transform: translate(-50%, -50%);
   position: absolute;
   top: 50%;
@@ -73,4 +72,14 @@
   background: white;
   color: #b9170b;
   border-color: #b9170b;
+}
+
+@media screen and (max-width: 600px) {
+  .auth_container {
+    width: 85vw;
+    padding: 1.5rem;
+  }
+  .auth_form {
+    padding: 0;
+  }
 }

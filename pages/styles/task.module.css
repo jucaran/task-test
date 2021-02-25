@@ -78,3 +78,21 @@
 .delete_btn:hover {
   background: #6e0000;
 }
+
+@media screen and (max-width: 600px) {
+  .task {
+    padding: 0.5rem;
+    margin: 0;
+    width: 100%;
+    gap: 10px;
+  }
+
+  .task_title {
+    font-size: 1rem;
+  }
+
+  .task_status {
+    height: 2rem;
+    padding: 0.2rem 0.5rem;
+  }
+}

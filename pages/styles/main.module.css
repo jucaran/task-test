@@ -2,7 +2,6 @@
   position: absolute;
   top: 0;
   width: 100vw;
-  /* height: 3rem; */
   background: #1c1c1c;
   display: flex;
   justify-content: flex-end;
@@ -94,4 +93,41 @@
 .add_btn:hover {
   background: #00a050;
   color: white;
+}
+
+@media screen and (max-width: 600px) {
+  .main {
+    width: 95vw;
+  }
+  .main h1 {
+    text-align: center;
+    padding-bottom: 1rem;
+  }
+
+  .tasks_list {
+    margin: 0.5rem 0;
+    padding: 0;
+    width: 95%;
+  }
+
+  .add_form {
+    width: 95%;
+    padding: 1rem;
+  }
+  .add_form div {
+    margin-right: 1rem;
+  }
+
+  .add_form label {
+    display: none;
+  }
+
+  .add_input {
+    padding: 0.2rem;
+    margin: 0;
+  }
+
+  .add_btn {
+    margin: 0;
+  }
 }
