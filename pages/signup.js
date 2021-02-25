@@ -49,7 +49,7 @@ export default function Login() {
         <button disable={loading.toString()} className={styles.google_btn}>
           Use Google Account
         </button>
-        <Link href="/login">Already have an account? Sing-In!</Link>
+        <Link href="/login">Already have an account? Sign-In!</Link>
       </form>
     </main>
   );

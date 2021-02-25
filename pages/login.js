@@ -37,7 +37,7 @@ export default function Login() {
           Use Google Account
         </span>
       </form>
-      <Link href="/signup">Don't have an account? Sing-Up!</Link>
+      <Link href="/signup">Don't have an account? Sign-Up!</Link>
     </main>
   );
 }
