@@ -5,18 +5,18 @@ import { db } from "./firebase";
 import { listTasks } from "./list";
 
 export default async (req, res) => {
-  const { id, title, color, complete } = JSON.parse(req.body);
+  const { userId, id, title, color, complete } = JSON.parse(req.body);
 
   try {
     // Updates the task in firestore db
-    await db.collection("tasks").doc(id).set({
+    await db.collection(userId).doc(id).set({
       title,
       color,
       complete,
     });
 
     // Gets the updated tasks list
-    const tasks = await listTasks();
+    const tasks = await listTasks(userId);
     // Sends it to the client
     res.status(200).json(tasks);
   } catch (err) {

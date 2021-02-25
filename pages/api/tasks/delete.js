@@ -4,12 +4,12 @@ import { db } from "./firebase";
 import { listTasks } from "./list";
 
 export default async (req, res) => {
-  const id = req.body;
+  const { userId, taskId } = JSON.parse(req.body);
   try {
-    await db.collection("tasks").doc(id).delete();
+    await db.collection(userId).doc(taskId).delete();
 
     // Gets updated task list
-    const tasks = await listTasks();
+    const tasks = await listTasks(userId);
     // And sends it to the client
     res.status(200).json(tasks);
   } catch (err) {

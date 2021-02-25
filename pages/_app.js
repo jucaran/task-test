@@ -1,11 +1,14 @@
-import "../styles/globals.css";
-import { TaskProvider, TasksProvider } from "./providers/TasksProvider";
+import "./styles/globals.css";
+import { TaskProvider } from "./providers/TasksProvider";
+import { AuthProvider } from "./providers/AuthProvider";
 
 function MyApp({ Component, pageProps }) {
   return (
-    <TaskProvider>
-      <Component {...pageProps} />
-    </TaskProvider>
+    <AuthProvider>
+      <TaskProvider>
+        <Component {...pageProps} />
+      </TaskProvider>
+    </AuthProvider>
   );
 }
 

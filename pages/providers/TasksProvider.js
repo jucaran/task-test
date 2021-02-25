@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { AuthContext } from "./AuthProvider";
 
 export const TaskContext = React.createContext({
   tasks: [],
@@ -10,6 +11,7 @@ export const TaskContext = React.createContext({
 
 export const TaskProvider = ({ children }) => {
   const [tasks, setTasks] = useState([]);
+  const { user } = useContext(AuthContext);
   const apiUrl = "http://localhost:3000/api/tasks";
 
   return (
@@ -17,11 +19,11 @@ export const TaskProvider = ({ children }) => {
       value={{
         tasks,
         setTasks,
-        createTask: async (e) => {
+        createTask: async (e, inputs) => {
           e.preventDefault();
           fetch(`${apiUrl}/create`, {
             method: "POST",
-            body: JSON.stringify(inputs),
+            body: JSON.stringify({ ...inputs, userId: user.uid }),
           })
             .then((res) => res.json())
             .then((data) => setTasks(data));
@@ -29,7 +31,7 @@ export const TaskProvider = ({ children }) => {
         updateTask: (task) => {
           fetch(`${apiUrl}/update`, {
             method: "POST",
-            body: JSON.stringify(task),
+            body: JSON.stringify({ ...task, userId: user.uid }),
           })
             .then((res) => res.json())
             .then((data) => setTasks(data));
@@ -37,7 +39,7 @@ export const TaskProvider = ({ children }) => {
         deleteTask: (taskId) => {
           fetch(`${apiUrl}/delete`, {
             method: "DELETE",
-            body: taskId,
+            body: JSON.stringify({ userId: user.uid, taskId }),
           })
             .then((res) => res.json())
             .then((data) => setTasks(data));

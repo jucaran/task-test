@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { TaskContext } from "../providers/TasksProvider";
-import styles from "../../styles/task.module.css";
+import styles from "../styles/task.module.css";
 
 const Task = ({ task }) => {
   const { updateTask, deleteTask } = useContext(TaskContext);
