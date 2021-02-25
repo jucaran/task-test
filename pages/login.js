@@ -16,6 +16,7 @@ export default function Login() {
 
     try {
       await login(emailRef.current.value, passwordRef.current.value);
+      router.push("/");
     } catch (err) {
       setError(err?.message);
       console.log(err);

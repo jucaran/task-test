@@ -12,7 +12,7 @@ export const TaskContext = React.createContext({
 export const TaskProvider = ({ children }) => {
   const [tasks, setTasks] = useState([]);
   const { user } = useContext(AuthContext);
-  const apiUrl = "https://task-test.vercel.app";
+  const apiUrl = "https://task-test.vercel.app/api";
 
   return (
     <TaskContext.Provider
